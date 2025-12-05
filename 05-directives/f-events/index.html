@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .counter {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        font-size: 24px;
+        margin: 20px 0;
+      }
+      .count {
+        min-width: 50px;
+        text-align: center;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 18px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 4. 事件處理 -->
+    <div id="events">
+      <h3>4. 事件處理</h3>
+      <!-- v-on (@) -->
+      <div>
+        <h4>魔法練習場</h4>
+        <div class="magic-training">
+          <p>魔法點數: {{ magicPoints }}</p>
+          <button v-on:click="castSpell" type="button">施放魔法 ✨</button>
+          <button @click.right.prevent="superSpell">右鍵施放超級魔法 🌟</button>
+          <div v-if="isCasting" class="spell-effect">{{ currentSpell }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="app">
+      <h2>計數器</h2>
+
+      <div class="counter">
+        <button @click="minus">-</button>
+        <span class="count">{{ count }}</span>
+        <button @click="plus">+</button>
+      </div>
+
+      <button @click="reset">重置</button>
+    </div>
+
+    <script>
+      Vue.createApp({
+        data() {
+          return {
+            magicPoints: 0,
+            isCasting: false,
+            currentSpell: "",
+          };
+        },
+        methods: {
+          castSpell() {
+            this.magicPoints += 1;
+            this.showSpellEffect("✨ 魔法閃耀！");
+          },
+          superSpell() {
+            this.magicPoints += 5;
+            this.showSpellEffect("🌟 超級魔法發動！");
+          },
+          showSpellEffect(spell) {
+            this.currentSpell = spell;
+            this.isCasting = true;
+            setTimeout(() => {
+              this.isCasting = false;
+            }, 1000);
+          },
+        },
+      }).mount("#events");
+
+      const { createApp } = Vue;
+
+      createApp({
+        data() {
+          return {
+            count: 0,
+          };
+        },
+        methods: {
+          plus() {
+            this.count++
+          },
+          minus() {
+            this.count--
+          },
+          reset() {
+            this.count = 0
+          },
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>
